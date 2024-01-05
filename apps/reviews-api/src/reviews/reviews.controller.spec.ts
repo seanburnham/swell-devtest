@@ -81,13 +81,35 @@ describe('ReviewsController', () => {
 	});
 
 	describe('getReviews()', () => {
-		it.todo('should fetch all reviews');
+		it('should fetch all reviews', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews).toHaveLength(3);
+		});
 
-		it.todo('should fetch reviews in descending order by date');
+		it('should fetch reviews in descending order by date', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews[0].id).toBe('3');
+			expect(response.body.reviews[1].id).toBe('2');
+			expect(response.body.reviews[2].id).toBe('1');
+		});
 
-		it.todo('should include user data with review');
+		it('should include user data with review', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews[0].user.id).toBe(user2Id);
+			expect(response.body.reviews[1].user.id).toBe(user2Id);
+			expect(response.body.reviews[2].user.id).toBe(user1Id);
+		});
 
-		it.todo('should include company data with review');
+		it('should include company data with review', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews[0].company.id).toBe(company1Id);
+			expect(response.body.reviews[1].company.id).toBe(company2Id);
+			expect(response.body.reviews[2].company.id).toBe(company1Id);
+		});
 
 		// Feel free to add any additional tests you think are necessary
 	});
