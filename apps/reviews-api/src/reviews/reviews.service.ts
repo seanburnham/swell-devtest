@@ -9,7 +9,9 @@ export class ReviewsService {
 		return this.prisma.review.count();
 	}
 
-	getAllReviews() {
+	getAllReviews(page: number, limit: number) {
+		const skip = (page - 1) * limit;
+
 		return this.prisma.review.findMany({
 			include: {
 				company: true,
@@ -18,6 +20,8 @@ export class ReviewsService {
 			orderBy: {
 				createdOn: 'desc',
 			},
+			take: limit,
+			skip,
 		});
 	}
 }

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { ReviewsCountResponse, ReviewsResponse } from './reviews.types';
 
@@ -7,8 +7,14 @@ export class ReviewsController {
 	constructor(private reviewsService: ReviewsService) {}
 
 	@Get()
-	async getReviews(): Promise<ReviewsResponse> {
-		const reviews = await this.reviewsService.getAllReviews();
+	async getReviews(
+		@Query('page') page: string,
+		@Query('limit') limit: string,
+	): Promise<ReviewsResponse> {
+		const pageNumber = parseInt(page, 10) || 1;
+		const limitNumber = parseInt(limit, 10) || 20;
+
+		const reviews = await this.reviewsService.getAllReviews(pageNumber, limitNumber);
 		return { reviews };
 	}
 
