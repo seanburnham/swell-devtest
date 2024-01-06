@@ -111,6 +111,16 @@ describe('ReviewsController', () => {
 			expect(response.body.reviews[2].company.id).toBe(company1Id);
 		});
 
-		// Feel free to add any additional tests you think are necessary
+		it('should limit results', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?limit=2');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews).toHaveLength(2);
+		});
+
+		it('should paginate results', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=2&limit=2');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews).toHaveLength(1);
+		});
 	});
 });
